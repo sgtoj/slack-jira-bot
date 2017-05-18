@@ -4,22 +4,33 @@
   "description": "Slack bot for Jira integration.",
   "main": "out/handler.js",
   "scripts": {
-    "dev:tunnel": "lt --port 8000 --subdomain sgtoj",
-    "start": "node ./out/handler.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "node ./node_modules/typescript/bin/tsc",
+    "cp:td-types": "cp ./typings/testdouble/index.d.ts node_modules/testdouble/index.d.ts",
+    "dev:nodemon": "node ./node_modules/nodemon/bin/nodemon --watch 'out/**/*' --ignore 'out/**/*.Test.js' out/index.js",
+    "dev:tunnel": "./bin/ngrok http --subdmain=sgtoj 3000",
+    "recompile": "rm -rf ./out || true && npm run compile",
+    "start": "node ./out/index.js",
+    "test": "node ./node_modules/mocha/bin/mocha 'out/**/*.Test.js' --reporter spec",
     "watch": "node ./node_modules/typescript/bin/tsc --watch"
   },
   "author": "Brian Ojeda",
   "license": "ISC",
   "dependencies": {
+    "@slack/client": "^3.9.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.3",
-    "@slack/client": "^3.9.0"
+    "jira-client": "^6.3.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.3",
+    "@types/chai": "^3.5.2",
     "@types/express": "^4.0.35",
+    "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.18",
+    "chai": "^3.5.0",
+    "mocha": "^3.4.1",
+    "nodemon": "^1.11.0",
+    "testdouble": "^2.1.2",
     "tslint": "^5.2.0",
     "typescript": "^2.3.2"
   }

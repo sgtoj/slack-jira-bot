@@ -10,7 +10,7 @@
         "allowJs": false,
         "experimentalDecorators": true,
         "pretty": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "alwaysStrict": true
     }
 }
