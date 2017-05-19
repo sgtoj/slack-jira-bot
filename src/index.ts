@@ -1,5 +1,5 @@
 import * as http from "http";
-import { HandlerServer } from "./handler/server";
+import { HandlerServer } from "./server/server";
 
 
 const port = normalizePort(process.env.PORT || 3000);

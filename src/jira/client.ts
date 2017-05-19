@@ -1,9 +1,13 @@
 import JiraClient from "jira-client";
 
-export class Jira {
+class Jira {
     private client: any;
 
-    constructor (config) {
+    constructor (config?) {
+        this.client = new JiraClient(config);
+    }
+
+    public configure(config) {
         this.client = new JiraClient(config);
     }
 
@@ -19,3 +23,5 @@ export class Jira {
         return issue;
     }
 }
+
+export const jira = new Jira();
