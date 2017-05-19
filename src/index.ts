@@ -1,6 +1,9 @@
 import * as http from "http";
 import { HandlerServer } from "./server/server";
+import { jira } from "./jira/client";
 
+const config = require("../data/config.json");
+jira.configure(config.server.jira);
 
 const port = normalizePort(process.env.PORT || 3000);
 const app = HandlerServer.bootstrap().app;

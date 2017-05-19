@@ -1,10 +1,9 @@
-import JiraClient from "jira-client";
+import * as JiraClient from "jira-client";
 
 export class Jira {
     private client: any;
 
-    constructor (config?) {
-        this.client = new JiraClient(config);
+    constructor () {
     }
 
     public configure(config) {
@@ -15,7 +14,7 @@ export class Jira {
         let issue: any;
 
         try {
-            let issue = await this.client.findIssue(issueNumber);
+            issue = await this.client.findIssue(issueNumber);
         } catch (e) {
             console.error(e);
         }
