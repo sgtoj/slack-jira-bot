@@ -1,5 +1,5 @@
 import { Message } from "./message";
 
-export const slackCallbacks = [
+export const slackEventHandlers = [
     Message
 ];

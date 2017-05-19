@@ -1,6 +1,6 @@
 import JiraClient from "jira-client";
 
-class Jira {
+export class Jira {
     private client: any;
 
     constructor (config?) {
