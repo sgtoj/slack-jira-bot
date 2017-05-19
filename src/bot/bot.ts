@@ -18,6 +18,7 @@ class SlackBot {
         } else {
             console.log(callback);
         }
+
     }
 
 }

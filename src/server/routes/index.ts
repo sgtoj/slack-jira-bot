@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 
-import { SlackEventMetaData, SlackCallbackRequest} from "../interfaces/slack";
+import { SlackEventMetaData } from "../../slack/interfaces";
+import { SlackCallbackRequest } from "../interfaces/slack";
 import { slackEventHandlers } from "../handlers/handles";
 
 /**

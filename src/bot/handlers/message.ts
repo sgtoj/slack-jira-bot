@@ -1,3 +1,6 @@
+import { extractJiraIssueKey } from "../helpers/filter";
+import { SlackEvent } from "../../slack/interfaces";
+
 
 export class Message {
 
@@ -5,8 +8,15 @@ export class Message {
        return "message";
     }
 
-    public static handle(event: any) {
-        console.log(`New Message: ${event.text}`);
+    public static handle(event: SlackEvent) {
+        let jiraNumber = extractJiraIssueKey(event.text);
+
+        if (jiraNumber) {
+            console.log(`Jira Number: ${jiraNumber}`);
+        } else {
+            console.log(`No Jira ticket`);
+        }
+
     }
 
 }
