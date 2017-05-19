@@ -7,7 +7,7 @@
     "compile": "node ./node_modules/typescript/bin/tsc",
     "cp:td-types": "cp ./typings/testdouble/index.d.ts node_modules/testdouble/index.d.ts",
     "dev:nodemon": "node ./node_modules/nodemon/bin/nodemon --watch 'out/**/*' --ignore 'out/**/*.Test.js' out/index.js",
-    "dev:tunnel": "./bin/ngrok http --subdmain=sgtoj 3000",
+    "dev:tunnel": "./bin/ngrok.exe http --subdomain=sgtoj 3000",
     "recompile": "rm -rf ./out || true && npm run compile",
     "start": "node ./out/index.js",
     "test": "node ./node_modules/mocha/bin/mocha 'out/**/*.Test.js' --reporter spec",
