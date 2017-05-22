@@ -16,7 +16,6 @@
   "author": "Brian Ojeda",
   "license": "ISC",
   "dependencies": {
-    "@slack/client": "^3.9.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.3",
     "jira-client": "^6.3.0"
