@@ -1,80 +1,9 @@
 import { extractJiraIssueKey } from "../helpers/filter";
 import { SlackEvent } from "../../slack/interfaces";
-import { jira } from "../../jira/client";
-
-interface JiraIssue {
-    id: number;
-    self: string;
-    key: string;
-    summary: string;
-    status: {
-        self: string;
-        description: string;
-        iconUrl: string;
-        name: string;
-        id: string;
-        statusCategory: string;
-    };
-    priority: {
-        self: string;
-        iconUrl: string;
-        name: string;
-        id: string;
-    };
-    assignee: {
-        self: string;
-        name: string;
-        key: string;
-        emailAddress: string;
-        avatarUrls: {}
-        displayName: string;
-        active: boolean;
-        timeZone: string;
-    };
-    creator: {
-        self: string;
-        name: string;
-        key: string;
-        emailAddress: string;
-        avatarUrls: {}
-        displayName: string;
-        active: boolean;
-        timeZone: string;
-    };
-    reporter: {
-        self: string;
-        name: string;
-        key: string;
-        emailAddress: string;
-        avatarUrls: {}
-        displayName: string;
-        active: boolean;
-        timeZone: string;
-    };
-    progress: {
-        progress: number;
-        total: number;
-        percent: number;
-    };
-    issuetype: {
-        self: string
-        id: string;
-        description: string;
-        iconUrl: string;
-        name: string;
-        subtask: string;
-        avatarId: number;
-    };
-    project: {
-        self: string;
-        id: string;
-        key: string;
-        name: string;
-        avatarUrls: {}
-        projectCategory: [{}];
-    }
-}
-
+import { JiraIssue } from "../../jira/interface";
+import { formatIssueMessage } from "../formatter/issue";
+import { SlackBot } from "../bot";
+import jira from "../../jira/client";
 
 export class Message {
 
@@ -82,16 +11,33 @@ export class Message {
        return "message";
     }
 
-    public static async handle(event: SlackEvent) {
-        let jiraNumber = extractJiraIssueKey(event.text);
+    public static async handle(bot: SlackBot, event: SlackEvent) {
+        if (event.previous_message) return null;
 
-        if (jiraNumber) {
-            let ticket = await jira.findIssue(jiraNumber[0]);
-            console.log(ticket);
-        } else {
-            console.log(`No Jira ticket`);
+        let jiraKeys = extractJiraIssueKey(event.text);
+        if (!jiraKeys) return null;
+
+        let tickets = await this.tickets(jiraKeys);
+        if (tickets.length <= 0) return null;
+
+        let message = formatIssueMessage(tickets);
+        message.token = bot.token;
+        message.channel = event.channel;
+
+        bot.client.post("chat.postMessage", message.stringify());
+    }
+
+    private static async tickets (jiraKeys: Array<string>) {
+        let tickets = Array<JiraIssue>();
+
+        for (let jiraKey of jiraKeys) {
+            let ticket = await jira.findIssue(jiraKey);
+            if (!ticket)
+                continue;
+            tickets.push(ticket);
         }
 
+        return tickets;
     }
 
 }

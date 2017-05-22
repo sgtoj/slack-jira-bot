@@ -3,7 +3,7 @@ import { BaseRoute } from "./route";
 
 import { SlackEventMetaData } from "../../slack/interfaces";
 import { SlackCallbackRequest } from "../interfaces/slack";
-import { slackEventHandlers } from "../handlers/handles";
+import slackEventHandlers from "../handlers/handles";
 
 /**
  * / route
@@ -34,17 +34,15 @@ export class IndexRoute extends BaseRoute {
     public post(req: Request, res: Response, next: NextFunction) {
         const payload: SlackEventMetaData = req.body;
 
+        console.log(`New Request: ${JSON.stringify(payload)}`);
+
         const handler = slackEventHandlers.find(handler => {
             return handler.type === payload.type;
         });
 
-        if (handler) {
+        if (handler)
             handler.handle(req, res, next);
-        } else {
-            console.log(payload);
-        }
     }
-
 
     /**
      * Create the routes.

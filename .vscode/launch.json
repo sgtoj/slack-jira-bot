@@ -6,7 +6,7 @@
             "request": "launch",
             "protocol": "inspector",
             "name": "Server - Local Debug",
-            "program": "${workspaceRoot}/out/launch.js",
+            "program": "${workspaceRoot}/out/index.js",
             "sourceMaps": true,
             "smartStep": true,
             "showAsyncStacks": true,
