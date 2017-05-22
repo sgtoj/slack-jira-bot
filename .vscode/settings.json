@@ -8,7 +8,6 @@
         "**/**.map": true,
         "bin/": true,
         "node_modules/": true,
-        "out/": false
-    },
-    "editor.tabSize": 4
+        "out/": true
+    }
 }
