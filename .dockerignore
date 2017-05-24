@@ -10,7 +10,7 @@ src
 # dev configs
 .gitignore
 .dockerignore
-appconfig.json
+*appconfig.json*
 appconfig.template.json
 package.json
 tsconfig.json
