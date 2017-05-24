@@ -22,7 +22,8 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.3",
-    "jira-client": "^6.3.0"
+    "jira-client": "^6.3.0",
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.3",
