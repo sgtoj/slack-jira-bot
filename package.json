@@ -6,6 +6,9 @@
   "scripts": {
     "compile": "node ./node_modules/typescript/bin/tsc",
     "cp:td-types": "cp ./typings/testdouble/index.d.ts node_modules/testdouble/index.d.ts",
+    "publish:docker": "npm run recompile && npm run docker:build && npm run docker:tag && npm run docker:push",
+    "docker:build": "docker build -f docker/Dockerfile -t jira-slack-bot:dev .",
+    "docker:tag": "docker tag jira-slack-bot:dev sgtoj/jira-slack-bot:latest",
     "dev:nodemon": "node ./node_modules/nodemon/bin/nodemon --watch 'out/**/*' --ignore 'out/**/*.Test.js' out/index.js",
     "dev:tunnel": "./bin/ngrok.exe http --subdomain=sgtoj 3000",
     "recompile": "rm -rf ./out || true && npm run compile",
