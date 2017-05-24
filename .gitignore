@@ -8,4 +8,5 @@ tmp
 out
 
 # secrets
-data/
+appconfig.json
+docker/docker-compose.dev.yml

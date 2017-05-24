@@ -1,7 +1,7 @@
 import * as JiraClient from "jira-client";
 import { JiraIssue } from "./interface";
 
-interface JiraConfig {
+export interface JiraConfig {
     [name: string]: any;
     protocol: string;
     host: string;

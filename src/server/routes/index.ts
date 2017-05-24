@@ -5,32 +5,17 @@ import { SlackEventMetaData } from "../../slack/interfaces";
 import { SlackCallbackRequest } from "../interfaces/slack";
 import slackEventHandlers from "../handlers/handles";
 
-/**
- * / route
- *
- * @class User
- */
 export class IndexRoute extends BaseRoute {
 
-    /**
-     * Constructor
-     *
-     * @class IndexRoute
-     * @constructor
-     */
     constructor() {
         super();
     }
 
-    /**
-     * The home page route.
-     *
-     * @class IndexRoute
-     * @method index
-     * @param req {Request} The express Request object.
-     * @param res {Response} The express Response object.
-     * @next {NextFunction} Execute the next method.
-     */
+    public get(req: Request, res: Response, next: NextFunction) {
+        res.sendStatus(200);
+        res.end();
+    }
+
     public post(req: Request, res: Response, next: NextFunction) {
         const payload: SlackEventMetaData = req.body;
 
@@ -44,15 +29,14 @@ export class IndexRoute extends BaseRoute {
             handler.handle(req, res, next);
     }
 
-    /**
-     * Create the routes.
-     *
-     * @class IndexRoute
-     * @method create
-     * @static
-     */
     public static create(router: Router) {
         const route = new IndexRoute();
+
+        // add empty return
+        router.get("/", (req: Request, res: Response, next: NextFunction) => {
+            route.get(req, res, next);
+        });
+
 
         //  add home page route
         router.post("/", (req: Request, res: Response, next: NextFunction) => {
