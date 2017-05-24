@@ -5,7 +5,7 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "**/**.map": true,
+        "**/*.map": true,
         "bin/": true,
         "node_modules/": true,
         "out/": true
