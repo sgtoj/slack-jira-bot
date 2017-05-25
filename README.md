@@ -60,9 +60,9 @@ defined by default or defined the in the `appconfig.json` (explained above).
 - `SLACK_AUTHTOKEN`: Slack **OAuth Access Token** for the app.
   - Example: `xoxp-xxx-xxx-xxx-xxx`
 - `SLACK_VALIDATIONTOKEN`: Slack **App Credential Verification Token**.
-  - Example: `xoxp-xxx-xxx-xxx-xxx`
+  - Example: `zxy098`
 - `JIRA_PROTOCOL`: HTTP or HTTPS protocol used to connect to Jira.
-  - Default: `https:`
+  - Default: `https`
 - `JIRA_HOST`: Domain of Jira.
   - Example: `jira.example.com`
 - `JIRA_USERNAME`: Jira username.
