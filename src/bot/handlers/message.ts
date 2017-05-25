@@ -17,7 +17,7 @@ export class Message {
         let keys = extractJiraIssueKey(event.text);
         if (!keys) return;
 
-        let tickets = await this.tickets(team, keys);
+        let tickets = await this.issues(team, keys);
         if (tickets.length <= 0) return;
 
         this.send(event.channel, tickets, apiClient);
@@ -30,11 +30,11 @@ export class Message {
         apiClient.post("chat.postMessage", message);
     }
 
-    private static async tickets (team: Team, keys: Array<string>) {
+    private static async issues (team: Team, keys: Array<string>) {
         let tickets = Array<JiraIssue>();
 
-        for (let jiraKey of keys) {
-            let ticket = await team.jira.findIssue(jiraKey);
+        for (let key of keys) {
+            let ticket = await team.jira.findIssue(key);
             if (!ticket)
                 continue;
             tickets.push(ticket);

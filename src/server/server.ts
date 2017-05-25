@@ -5,7 +5,7 @@ import { SlackBot } from "../bot/bot";
 import { AppLocal } from "./interfaces/app-local";
 import { IndexRoute } from "./routes/index";
 
-export interface HandlerAPIApp extends express.Application {
+interface HandlerAPIApp extends express.Application {
     locals: AppLocal;
 }
 

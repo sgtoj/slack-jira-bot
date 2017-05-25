@@ -1,5 +1,5 @@
-import { ApiPayload, ApiArugment } from "./payload";
 import * as querystring from "querystring";
+import { ApiPayload, ApiArugment } from "./payload";
 
 interface MessageArugment extends ApiArugment {
     token: string;
