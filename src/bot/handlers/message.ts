@@ -1,9 +1,9 @@
 import { extractJiraIssueKey } from "../helpers/filter";
+import { Team } from "../../teams/team";
 import { SlackEvent } from "../../slack/interfaces";
 import { JiraIssue } from "../../jira/interface";
 import { formatIssueMessage } from "../formatter/issue";
-import { SlackBot } from "../bot";
-import jira from "../../jira/client";
+import { SlackApiClient } from "../api/client";
 
 export class Message {
 
@@ -11,33 +11,40 @@ export class Message {
        return "message";
     }
 
-    public static async handle(bot: SlackBot, event: SlackEvent) {
-        if (event.previous_message) return null;
+    public static async handle(team: Team, event: SlackEvent, apiClient: SlackApiClient) {
+        if (this.isEditedMessage(event)) return null;
 
-        let jiraKeys = extractJiraIssueKey(event.text);
-        if (!jiraKeys) return null;
+        let keys = extractJiraIssueKey(event.text);
+        if (!keys) return;
 
-        let tickets = await this.tickets(jiraKeys);
-        if (tickets.length <= 0) return null;
+        let tickets = await this.tickets(team, keys);
+        if (tickets.length <= 0) return;
 
-        let message = formatIssueMessage(tickets);
-        message.token = bot.token;
-        message.channel = event.channel;
-
-        bot.client.post("chat.postMessage", message.stringify());
+        this.send(event.channel, tickets, apiClient);
     }
 
-    private static async tickets (jiraKeys: Array<string>) {
+    private static async send(channel: string, tickets: Array<JiraIssue>, apiClient: SlackApiClient) {
+        let message = formatIssueMessage(tickets);
+        message.channel = channel;
+
+        apiClient.post("chat.postMessage", message);
+    }
+
+    private static async tickets (team: Team, keys: Array<string>) {
         let tickets = Array<JiraIssue>();
 
-        for (let jiraKey of jiraKeys) {
-            let ticket = await jira.findIssue(jiraKey);
+        for (let jiraKey of keys) {
+            let ticket = await team.jira.findIssue(jiraKey);
             if (!ticket)
                 continue;
             tickets.push(ticket);
         }
 
         return tickets;
+    }
+
+    private static isEditedMessage(event: SlackEvent): boolean {
+        return !!event.previous_message;
     }
 
 }

@@ -4,14 +4,17 @@
         "basePath": ""
     },
     "slack": {
-        "token": ""
+        "authToken": "",
+        "validationToken": ""
     },
-    "jira": {
-        "protocol": "https",
-        "host": "",
-        "username": "",
-        "password": "",
-        "apiVersion": "2",
-        "strictSSL": true
+    "team": {
+        "jira": {
+            "protocol": "https",
+            "host": "",
+            "username": "",
+            "password": "",
+            "apiVersion": "2",
+            "strictSSL": true
+        }
     }
 }

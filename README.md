@@ -57,7 +57,9 @@ defined by default or defined the in the `appconfig.json` (explained above).
   - Default: 80
 - `SERVER_BASEPATH`: Base URL path for incoming slack webhook events.
   - Example: `/coolbot`
-- `SLACK_TOKEN`: Slack OAuth Access Token for the app.
+- `SLACK_AUTHTOKEN`: Slack **OAuth Access Token** for the app.
+  - Example: `xoxp-xxx-xxx-xxx-xxx`
+- `SLACK_VALIDATIONTOKEN`: Slack **App Credential Verification Token**.
   - Example: `xoxp-xxx-xxx-xxx-xxx`
 - `JIRA_PROTOCOL`: HTTP or HTTPS protocol used to connect to Jira.
   - Default: `https:`
