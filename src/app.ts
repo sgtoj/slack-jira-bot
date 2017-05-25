@@ -23,7 +23,7 @@ export class SlackApp {
 
         this.bot = new SlackBot(this.config.slack);
         this.api = new HandlerAPI(config.server, this.bot);
-        this.server = http.createServer(this.api.app);
+        this.server = http.createServer(this.api.interface);
 
         this.configure();
     }

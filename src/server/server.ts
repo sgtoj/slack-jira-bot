@@ -27,13 +27,13 @@ export class HandlerAPI {
         this.routes();
     }
 
-    public get app() {
+    public get interface() {
         return this.application;
     }
 
     private middlewares (): void {
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.interface.use(bodyParser.json());
+        this.interface.use(bodyParser.urlencoded({ extended: true }));
     }
 
     private routes(): void {
@@ -42,9 +42,9 @@ export class HandlerAPI {
         IndexRoute.create(router);
 
         if (!!this.config.basePath && this.config.basePath !== "") {
-            this.app.use(this.config.basePath, router);
+            this.interface.use(this.config.basePath, router);
         } else {
-            this.app.use(router);
+            this.interface.use(router);
         }
     }
 }
