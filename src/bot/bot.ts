@@ -2,33 +2,28 @@ import * as http from "http";
 
 import { SlackEvent, SlackEventMetaData } from "../slack/interfaces";
 import slackEventHandlers from "./handlers/handlers";
-import { SlackApiClient } from "./api/client";
-import client from "./api/client";
+import { SlackApiClient, SlackApiClientConfig } from "./api/client";
 
+export interface SlackBotConfig {
+    authToken: string;
+    validationToken: string;
+}
 
 export class SlackBot {
-    private _authToken: string;
-    private _validationToken: string;
-    private _client: SlackApiClient;
+    private readonly apiClient: SlackApiClient;
+    private config: SlackBotConfig;
 
-    constructor() {
-        this._client = client;
-    }
-
-    public get client() {
-        return this._client;
+    constructor(config: SlackBotConfig) {
+        this.config = config;
+        this.apiClient = new SlackApiClient({ authToken: this.authToken });
     }
 
     public get authToken() {
-        return this._authToken;
+        return this.config.authToken;
     }
 
     public get validationToken() {
-        return this._validationToken;
-    }
-
-    public configure(config) {
-        this._authToken = config.token;
+        return this.config.validationToken;
     }
 
     public receive(payload: SlackEventMetaData) {
@@ -44,7 +39,7 @@ export class SlackBot {
         });
 
         if (callback) {
-            callback.handle(bot, event);
+            callback.handle(this.apiClient, event);
         } else {
             console.log(event);
         }
@@ -60,9 +55,4 @@ export class SlackBot {
 
         return failCount === 0;
     }
-
-
 }
-
-const bot = new SlackBot();
-export default bot;

@@ -4,7 +4,8 @@ const defaults = {
             "port": 80
         },
         "slack": {
-            "token": ""
+            "authToken": "",
+            "validationToken": ""
         },
         "jira": {
             "protocol": "https",

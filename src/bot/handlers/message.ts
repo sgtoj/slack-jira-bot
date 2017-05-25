@@ -2,7 +2,7 @@ import { extractJiraIssueKey } from "../helpers/filter";
 import { SlackEvent } from "../../slack/interfaces";
 import { JiraIssue } from "../../jira/interface";
 import { formatIssueMessage } from "../formatter/issue";
-import { SlackBot } from "../bot";
+import { SlackApiClient } from "../api/client";
 import jira from "../../jira/client";
 
 export class Message {
@@ -11,7 +11,7 @@ export class Message {
        return "message";
     }
 
-    public static async handle(bot: SlackBot, event: SlackEvent) {
+    public static async handle(apiClient: SlackApiClient, event: SlackEvent) {
         if (event.previous_message) return null;
 
         let jiraKeys = extractJiraIssueKey(event.text);
@@ -21,10 +21,9 @@ export class Message {
         if (tickets.length <= 0) return null;
 
         let message = formatIssueMessage(tickets);
-        message.token = bot.authToken;
         message.channel = event.channel;
 
-        bot.client.post("chat.postMessage", message.stringify());
+        apiClient.post("chat.postMessage", message);
     }
 
     private static async tickets (jiraKeys: Array<string>) {

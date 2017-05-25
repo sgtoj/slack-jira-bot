@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import defaults from "./data/defaults";
-import { App, AppConfig } from "./app";
+import { SlackApp, AppConfig } from "./app";
 
 const CONFIG_PATH = process.env.CONFIG_PATH || "./appconfig.json";
 
@@ -16,7 +16,7 @@ if (fs.existsSync(CONFIG_PATH)) {
     }
 }
 
-config.slack.token = process.env.SLACK_TOKEN || config.slack.token;
+config.slack.authToken = process.env.SLACK_TOKEN || config.slack.authToken;
 config.server.port = process.env.SERVER_PORT || config.server.port;
 config.server.basePath = process.env.SERVER_BASEPATH || config.server.basePath;
 config.jira.protocol = process.env.JIRA_PROTOCOL || config.jira.protocol;
@@ -25,5 +25,5 @@ config.jira.username = process.env.JIRA_USERNAME || config.jira.username;
 config.jira.password = process.env.JIRA_PASSWORD || config.jira.password;
 config.jira.apiVersion = process.env.JIRA_APIVERSION || config.jira.apiVersion;
 
-const app = new App(config);
+const app = new SlackApp(config);
 app.launch();

@@ -1,34 +1,37 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 
+import { SlackBot } from "../bot/bot";
+import { AppLocal } from "./interfaces/app-local";
 import { IndexRoute } from "./routes/index";
 
-export interface HandlerServerConfig {
+export interface HandlerAPIApp extends express.Application {
+    locals: AppLocal;
+}
+
+export interface HandlerAPIConfig {
     port?: number;
     basePath?: string;
 }
 
-export class HandlerServer {
-    public app: express.Application;
-    private config: HandlerServerConfig;
+export class HandlerAPI {
+    private readonly config: HandlerAPIConfig;
+    public readonly application: HandlerAPIApp;
 
-    constructor(config?: HandlerServerConfig) {
-        this.config = config || {} as HandlerServerConfig;
+    constructor(config: HandlerAPIConfig, bot: SlackBot) {
+        this.config = config;
+        this.application = express();
 
-        this.app = express();
-
-        this.configure();
+        this.application.locals.bot = bot;
+        this.middlewares();
         this.routes();
     }
 
-    public static bootstrap(config?: HandlerServerConfig): HandlerServer {
-        return new HandlerServer(config);
+    public get app() {
+        return this.application;
     }
 
-    private configure (): void {
-        if (!this.config.port)
-            this.config.port = 80;
-
+    private middlewares (): void {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
     }

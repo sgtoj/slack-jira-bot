@@ -1,41 +1,41 @@
 import * as http from "http";
 import * as express from "express";
 
-import { HandlerServer, HandlerServerConfig } from "./server/server";
+import { HandlerAPI, HandlerAPIConfig } from "./server/server";
 import { JiraConfig } from "./jira/client";
 import jira from "./jira/client";
-import bot from "./bot/bot";
+import { SlackBot, SlackBotConfig } from "./bot/bot";
 
 export interface AppConfig {
-    server: HandlerServerConfig;
-    slack: { token: string; };
+    server: HandlerAPIConfig;
+    slack: SlackBotConfig;
     jira: JiraConfig;
 }
 
-export class App {
-    private appWebhook: express.Application;
-    private svrWebhook: http.Server;
-    private config: AppConfig;
+export class SlackApp {
+    private readonly config: AppConfig;
+    private readonly bot: SlackBot;
+    private readonly api: HandlerAPI;
+    private readonly server: http.Server;
 
     constructor (config: AppConfig) {
         this.config = config;
 
-        let webhookHandler = HandlerServer.bootstrap(config.server);
-        this.appWebhook = webhookHandler.app;
-        this.svrWebhook = http.createServer(this.appWebhook);
+        this.bot = new SlackBot(this.config.slack);
+        this.api = new HandlerAPI(config.server, this.bot);
+        this.server = http.createServer(this.api.app);
 
         this.configure();
     }
 
     public launch () {
-        this.svrWebhook.listen(this.config.server.port);
-        this.svrWebhook.on("error", this.onError.bind(this));
-        this.svrWebhook.on("listening", this.onListening.bind(this));
+        this.server.listen(this.config.server.port);
+        this.server.on("error", this.onError.bind(this));
+        this.server.on("listening", this.onListening.bind(this));
     }
 
     private configure () {
         jira.configure(this.config.jira);
-        bot.configure(this.config.slack);
     }
 
     private onError(error) {
@@ -62,11 +62,10 @@ export class App {
     }
 
     private onListening() {
-        let addr = this.svrWebhook.address();
+        let addr = this.server.address();
         let bind = typeof addr === "string"
             ? "pipe " + addr
             : "port " + addr.port;
         console.info(`Listening on ${bind}`);
     }
-
 }
