@@ -1,4 +1,5 @@
 import { extractJiraIssueKey } from "../helpers/filter";
+import { TeamModel } from "../../teams/store";
 import { SlackEvent } from "../../slack/interfaces";
 import { JiraIssue } from "../../jira/interface";
 import { formatIssueMessage } from "../formatter/issue";
@@ -11,7 +12,7 @@ export class Message {
        return "message";
     }
 
-    public static async handle(apiClient: SlackApiClient, event: SlackEvent) {
+    public static async handle(team: TeamModel, event: SlackEvent, apiClient: SlackApiClient) {
         if (event.previous_message) return null;
 
         let jiraKeys = extractJiraIssueKey(event.text);

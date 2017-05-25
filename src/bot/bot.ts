@@ -1,5 +1,6 @@
 import * as http from "http";
 
+import { TeamModel, TeamStore } from "../teams/store";
 import { SlackEvent, SlackEventMetaData } from "../slack/interfaces";
 import slackEventHandlers from "./handlers/handlers";
 import { SlackApiClient, SlackApiClientConfig } from "./api/client";
@@ -11,10 +12,13 @@ export interface SlackBotConfig {
 
 export class SlackBot {
     private readonly apiClient: SlackApiClient;
-    private config: SlackBotConfig;
+    private readonly teamStore: TeamStore;
+    private readonly config: SlackBotConfig;
 
-    constructor(config: SlackBotConfig) {
+    constructor(config: SlackBotConfig, teamStore: TeamStore) {
         this.config = config;
+
+        this.teamStore = teamStore;
         this.apiClient = new SlackApiClient({ authToken: this.authToken });
     }
 
@@ -30,16 +34,25 @@ export class SlackBot {
         if (!this.validate(payload))
             return;
 
-        this.process(null, payload.event);
+        this.preproces(payload);
     }
 
-    private process(team: any, event: SlackEvent) {
+    private preproces(payload: SlackEventMetaData) {
+         let team = this.teamStore.find(payload.team_id);
+
+         if (!team)
+            return;
+
+         this.process(team, payload.event);
+    }
+
+    private process(team: TeamModel, event: SlackEvent) {
         const callback = slackEventHandlers.find(cb => {
             return cb.type === event.type;
         });
 
         if (callback) {
-            callback.handle(this.apiClient, event);
+            callback.handle(team, event, this.apiClient);
         } else {
             console.log(event);
         }

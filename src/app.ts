@@ -5,11 +5,12 @@ import { HandlerAPI, HandlerAPIConfig } from "./server/server";
 import { JiraConfig } from "./jira/client";
 import jira from "./jira/client";
 import { SlackBot, SlackBotConfig } from "./bot/bot";
+import { TeamModel, TeamStore } from "./teams/store";
 
 export interface AppConfig {
     server: HandlerAPIConfig;
     slack: SlackBotConfig;
-    jira: JiraConfig;
+    team?: TeamModel;
 }
 
 export class SlackApp {
@@ -17,11 +18,13 @@ export class SlackApp {
     private readonly bot: SlackBot;
     private readonly api: HandlerAPI;
     private readonly server: http.Server;
+    private readonly teams: TeamStore;
 
-    constructor (config: AppConfig) {
+    constructor (config: AppConfig, teams: TeamStore) {
         this.config = config;
 
-        this.bot = new SlackBot(this.config.slack);
+        this.teams = teams;
+        this.bot = new SlackBot(this.config.slack, this.teams);
         this.api = new HandlerAPI(config.server, this.bot);
         this.server = http.createServer(this.api.interface);
 
@@ -35,7 +38,7 @@ export class SlackApp {
     }
 
     private configure () {
-        jira.configure(this.config.jira);
+        jira.configure(this.config.team.jira);
     }
 
     private onError(error) {

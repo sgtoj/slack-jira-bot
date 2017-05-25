@@ -1,4 +1,3 @@
-
 export interface SlackEvent {
     type: string;
     user: string;

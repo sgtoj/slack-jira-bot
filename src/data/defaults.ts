@@ -7,13 +7,16 @@ const defaults = {
             "authToken": "",
             "validationToken": ""
         },
-        "jira": {
-            "protocol": "https",
-            "host": "",
-            "username": "",
-            "password": "",
-            "apiVersion": "2",
-            "strictSSL": true
+        "team": {
+            "teamId": "main",
+            "jira": {
+                "protocol": "https",
+                "host": "",
+                "username": "",
+                "password": "",
+                "apiVersion": "2",
+                "strictSSL": true
+            }
         }
     }
 };
