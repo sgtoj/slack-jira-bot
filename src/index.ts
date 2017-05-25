@@ -5,7 +5,7 @@ import { SlackApp, AppConfig } from "./app";
 
 const CONFIG_PATH = process.env.CONFIG_PATH || "./appconfig.json";
 
-let config: AppConfig  = Object.assign({}, defaults.config);
+let config: AppConfig = Object.assign({}, defaults.config);
 
 if (fs.existsSync(CONFIG_PATH)) {
     try {

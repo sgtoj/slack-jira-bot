@@ -1,6 +1,7 @@
 import * as http from "http";
 
-import { TeamModel, TeamStore } from "../teams/store";
+import { Team } from "../teams/team";
+import { TeamStore } from "../teams/store";
 import { SlackEvent, SlackEventMetaData } from "../slack/interfaces";
 import slackEventHandlers from "./handlers/handlers";
 import { SlackApiClient, SlackApiClientConfig } from "./api/client";
@@ -46,7 +47,7 @@ export class SlackBot {
          this.process(team, payload.event);
     }
 
-    private process(team: TeamModel, event: SlackEvent) {
+    private process(team: Team, event: SlackEvent) {
         const callback = slackEventHandlers.find(cb => {
             return cb.type === event.type;
         });

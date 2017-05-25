@@ -1,20 +1,8 @@
-export interface JiraModel {
-    [name: string]: any;
-    protocol: string;
-    host: string;
-    username: string;
-    password: string;
-    apiVersion: string;
-    strictSSL: boolean;
-}
-
-export interface TeamModel {
-    teamId: string;
-    jira: JiraModel;
-}
+import { TeamModel } from "./interfaces";
+import { Team } from "./team";
 
 interface InternalStore {
-    [teamId: string]: TeamModel;
+    [teamId: string]: Team;
 }
 
 export class TeamStore {
@@ -25,10 +13,14 @@ export class TeamStore {
     }
 
     public add(teamModel: TeamModel) {
-        this.store["master"] = teamModel;
+        this.store["master"] = this.team(teamModel);
     }
 
-    public find(teamId: string): TeamModel {
+    public find(teamId: string): Team {
         return this.store["master"];
+    }
+
+    private team(teamModel: TeamModel): Team {
+        return new Team(teamModel);
     }
 }

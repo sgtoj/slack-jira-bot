@@ -3,9 +3,9 @@ import * as express from "express";
 
 import { HandlerAPI, HandlerAPIConfig } from "./server/server";
 import { JiraConfig } from "./jira/client";
-import jira from "./jira/client";
 import { SlackBot, SlackBotConfig } from "./bot/bot";
-import { TeamModel, TeamStore } from "./teams/store";
+import { TeamModel } from "./teams/interfaces";
+import { TeamStore } from "./teams/store";
 
 export interface AppConfig {
     server: HandlerAPIConfig;
@@ -27,18 +27,12 @@ export class SlackApp {
         this.bot = new SlackBot(this.config.slack, this.teams);
         this.api = new HandlerAPI(config.server, this.bot);
         this.server = http.createServer(this.api.interface);
-
-        this.configure();
     }
 
     public launch () {
         this.server.listen(this.config.server.port);
         this.server.on("error", this.onError.bind(this));
         this.server.on("listening", this.onListening.bind(this));
-    }
-
-    private configure () {
-        jira.configure(this.config.team.jira);
     }
 
     private onError(error) {

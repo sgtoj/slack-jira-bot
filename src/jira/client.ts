@@ -12,13 +12,10 @@ export interface JiraConfig {
 }
 
 export class Jira {
-    private client: any;
-    private config: JiraConfig;
+    private readonly config: JiraConfig;
+    private readonly client: any;
 
-    constructor () {
-    }
-
-    public configure(config: JiraConfig) {
+    constructor (config: JiraConfig) {
         this.config = config;
         this.client = new JiraClient(config);
     }
@@ -37,6 +34,3 @@ export class Jira {
         return issue;
     }
 }
-
-const jira = new Jira();
-export default jira;
