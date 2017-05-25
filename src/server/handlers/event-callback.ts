@@ -9,7 +9,7 @@ export class EventCallback {
     }
 
     public static handle(req: SlackCallbackRequest, res: Response, next: NextFunction) {
-        bot.handle(req.body.event);
+        bot.receive(req.body);
         res.status(200);
         res.end();
     }

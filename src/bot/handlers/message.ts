@@ -21,7 +21,7 @@ export class Message {
         if (tickets.length <= 0) return null;
 
         let message = formatIssueMessage(tickets);
-        message.token = bot.token;
+        message.token = bot.authToken;
         message.channel = event.channel;
 
         bot.client.post("chat.postMessage", message.stringify());
