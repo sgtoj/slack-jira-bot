@@ -1,5 +1,6 @@
 import * as https from "https";
 import * as querystring from "querystring";
+import * as logger from "winston";
 
 import { PostPayload } from "./interface";
 import { post } from "../helpers/request";
@@ -40,7 +41,7 @@ export class SlackApiClient {
             payload.token = this.authToken;
             result = await post(option, payload.toBody());
         } catch (e) {
-            console.error(e);
+            logger.error(e);
         }
 
         return result;

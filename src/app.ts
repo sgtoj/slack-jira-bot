@@ -1,8 +1,8 @@
 import * as http from "http";
 import * as express from "express";
+import * as logger from "winston";
 
 import { HandlerAPI, HandlerAPIConfig } from "./server/server";
-import { JiraConfig } from "./jira/client";
 import { SlackBot, SlackBotConfig } from "./bot/bot";
 import { TeamModel } from "./teams/interfaces";
 import { TeamStore } from "./teams/store";
@@ -46,11 +46,11 @@ export class SlackApp {
         // handle specific listen errors with friendly messages
         switch (error.code) {
             case "EACCES":
-                console.error(`${bind} requires elevated privileges!`);
+                logger.error(`${bind} requires elevated privileges!`);
                 process.exit(1);
                 break;
             case "EADDRINUSE":
-                console.error(`${bind} is already in use!`);
+                logger.error(`${bind} is already in use!`);
                 process.exit(1);
                 break;
             default:
@@ -63,6 +63,6 @@ export class SlackApp {
         let bind = typeof addr === "string"
             ? "pipe " + addr
             : "port " + addr.port;
-        console.info(`Listening on ${bind}`);
+        logger.info(`Listening on ${bind}`);
     }
 }

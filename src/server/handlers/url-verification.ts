@@ -1,4 +1,6 @@
+import * as logger from "winston";
 import { NextFunction, Request, Response } from "express";
+
 
 export class UrlVerification {
 
@@ -9,6 +11,8 @@ export class UrlVerification {
     public static handle(req: Request, res: Response, next: NextFunction) {
         res.send(req.body.challenge);
         res.end();
+
+        logger.info(`New Url Verification: ${JSON.stringify(req.body)}`);
     }
 
 }

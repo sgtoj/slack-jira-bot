@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+
 import { EventCallback } from "./event-callback";
 import { UrlVerification } from "./url-verification";
+
 
 export interface Handler {
     type: string;

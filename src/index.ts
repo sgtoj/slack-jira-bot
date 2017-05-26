@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as logger from "winston";
 import defaults from "./data/defaults";
 import { TeamStore } from "./teams/store";
 import { SlackApp, AppConfig } from "./app";
@@ -13,7 +14,7 @@ if (fs.existsSync(CONFIG_PATH)) {
         let override = JSON.parse(contents);
         config = Object.assign(defaults, override);
     } catch (e) {
-        console.error(e);
+        logger.error(e);
     }
 }
 

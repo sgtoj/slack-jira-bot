@@ -1,4 +1,5 @@
 import * as http from "http";
+import * as logger from "winston";
 
 import { Team } from "../teams/team";
 import { TeamStore } from "../teams/store";
@@ -31,7 +32,7 @@ export class SlackBot {
         return this.config.validationToken;
     }
 
-    public receive(payload: SlackEventMetaData) {
+    public async receive(payload: SlackEventMetaData) {
         if (!this.validate(payload))
             return;
 
@@ -55,7 +56,7 @@ export class SlackBot {
         if (callback) {
             callback.handle(team, event, this.apiClient);
         } else {
-            console.log(event);
+            logger.debug(event);
         }
     }
 
@@ -64,7 +65,7 @@ export class SlackBot {
 
         if (payload.token !== this.validationToken) {
             failCount++;
-            console.error(`Event Token Mismatch: ${payload.token}`);
+            logger.error(`Event Token Mismatch: ${payload.token}`);
         }
 
         return failCount === 0;

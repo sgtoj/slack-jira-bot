@@ -1,4 +1,5 @@
 import * as https from "https";
+import * as logger from "winston";
 
 export async function post (option, body?): Promise<any> {
 
@@ -7,7 +8,7 @@ export async function post (option, body?): Promise<any> {
             let body = "";
 
             res.on("error", err => {
-                console.warn(err);
+                logger.error(err);
                 reject(err);
             });
 
@@ -16,7 +17,7 @@ export async function post (option, body?): Promise<any> {
             });
 
             res.on("end", () => {
-                console.log(body);
+                logger.info(body);
                 resolve(body);
             });
 

@@ -1,5 +1,8 @@
+import * as logger from "winston";
+
 import * as JiraClient from "jira-client";
 import { JiraIssue } from "./interface";
+
 
 export interface JiraConfig {
     [name: string]: any;
@@ -10,6 +13,7 @@ export interface JiraConfig {
     apiVersion: string;
     strictSSL: boolean;
 }
+
 
 export class Jira {
     private readonly config: JiraConfig;
@@ -28,7 +32,7 @@ export class Jira {
             issue.url = `${this.config.protocol}://${this.config.host}/browse/${issue.key}`;
             issue.host = this.config.host;
         } catch (e) {
-            console.error(e);
+            logger.error(e);
         }
 
         return issue;
