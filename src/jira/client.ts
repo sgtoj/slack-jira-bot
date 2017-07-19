@@ -28,7 +28,7 @@ export class Jira {
         let issue: any;
 
         try {
-            issue = await this.client.findIssue(issueNumber);
+            issue = await this.client.findIssue(issueNumber, "", "*all", "*", false);
             issue.url = `${this.config.protocol}://${this.config.host}/browse/${issue.key}`;
             issue.host = this.config.host;
         } catch (e) {
