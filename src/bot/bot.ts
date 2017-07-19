@@ -36,10 +36,10 @@ export class SlackBot {
         if (!this.validate(payload))
             return;
 
-        this.preproces(payload);
+        this.preprocess(payload);
     }
 
-    private preproces(payload: SlackEventMetaData) {
+    private preprocess(payload: SlackEventMetaData) {
          let team = this.teamStore.find(payload.team_id);
 
          if (!team)
