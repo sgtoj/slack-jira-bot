@@ -3,7 +3,7 @@ import * as querystring from "querystring";
 import * as logger from "winston";
 
 import { PostPayload } from "./interface";
-import { post } from "../helpers/request";
+import * as request from "../helpers/request";
 
 const PROTOCOL = "https:";
 const HOSTNAME = "slack.com";
@@ -26,6 +26,20 @@ export class SlackApiClient {
     }
 
     public async post (method: string, payload: PostPayload) {
+        const option = this.postOption(method);
+
+        let result: any;
+        try {
+            payload.token = this.authToken;
+            result = await request.post(option, payload.toBody());
+        } catch (e) {
+            logger.error(e);
+        }
+
+        return result;
+    }
+
+    private postOption(method): https.RequestOptions {
         let option: https.RequestOptions = {
             protocol: PROTOCOL,
             hostname: HOSTNAME,
@@ -36,14 +50,6 @@ export class SlackApiClient {
             }
         };
 
-        let result: any;
-        try {
-            payload.token = this.authToken;
-            result = await post(option, payload.toBody());
-        } catch (e) {
-            logger.error(e);
-        }
-
-        return result;
+        return option;
     }
 }
